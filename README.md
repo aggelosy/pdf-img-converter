@@ -45,7 +45,7 @@ A professional-grade desktop application for converting PDF files to images, bui
 
 ## Screenshots
 
-> ![image](./pdf2img-screen01.png)
+> ![PDF//IMG Converter](pdf2img-screen01.png)
 
 ---
 
@@ -76,7 +76,7 @@ sudo apt install poppler-utils
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/pdf-img-converter.git
+git clone https://github.com/aggelosy/pdf-img-converter.git
 cd pdf-img-converter
 pip install -r requirements.txt
 ```
