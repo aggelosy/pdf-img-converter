@@ -45,7 +45,7 @@ A professional-grade desktop application for converting PDF files to images, bui
 
 ## Screenshots
 
-> (/pdf2img-screen01.png)
+> ![image](./pdf2img-screen01.png)
 
 ---
 
