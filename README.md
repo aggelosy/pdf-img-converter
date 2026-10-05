@@ -1,145 +1,152 @@
-# PDF//IMG — Batch PDF to Image Converter
+# PDF to Image Converter
 
-A professional-grade desktop application for converting PDF files to images, built with Python and PyQt5. Features a full industrial/utilitarian GUI, batch processing with a live queue, real-time previews, and multi-format output — with zero file-locking issues on network/UNC paths.
+![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![PNG and JPEG output](https://img.shields.io/badge/Output-PNG%20%7C%20JPEG-2EA44F)
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=flat-square)
-![PyQt5](https://img.shields.io/badge/PyQt5-5.15%2B-green?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
-![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=flat-square)
+A desktop application for converting PDF pages into images in bulk. Choose the pages, resolution, image format, and output layout from a simple interface.
 
----
+All PDF processing runs locally using Poppler. No document uploads are required.
+
+[Quick start](#quick-start) · [Usage](#usage) · [Output layouts](#output-layouts) · [Troubleshooting](#troubleshooting)
 
 ## Features
 
-### Conversion
-- **5 output formats** — PNG, JPEG, TIFF, WebP, BMP
-- **Configurable DPI** — 72 / 96 / 150 / 200 / 300 / 400 / 600
-- **JPEG quality control** — 10–100% with optimize flag
-- **WebP quality control** — with method 6 compression
-- **TIFF LZW compression** — automatic
-- **PNG optimize** — automatic
-- **Grayscale mode** — convert to greyscale on output
-- **Page range selection** — convert specific page ranges, not just full PDFs
-- **Configurable thread count** — 1–16 threads via Poppler
-- **Filename prefix** — prepend a custom string to all output folder/file names
-- **Custom output folder** — or default to same directory as the source PDF
-
-### GUI & UX
-- **Drag & drop** — drop PDFs directly onto the queue; duplicates are silently ignored
-- **Live PDF preview** — renders the first page of the selected PDF via PyMuPDF, no temp files
-- **Batch queue** — load multiple PDFs, reorder, remove individually, or clear all
-- **Right-click context menu** — Remove from queue / Reveal in Explorer (Windows), Finder (macOS), or file manager (Linux)
-- **Real-time stats** — files converted, total pages, total elapsed time, queue count
-- **Live conversion log** — timestamped, colour-coded (info / success / error)
-- **Results tab** — per-file summary with page count and elapsed time
-- **Abort button** — cleanly stops a running batch mid-way
-- **"Open when done"** — auto-reveals the output folder after each file
-- **Industrial/utilitarian theme** — Consolas monospace, amber accent (`#f0a500`), sharp rectangular UI
-
-### Reliability
-- **No WinError 32 / file-locking** — images are returned as PIL objects in memory and saved directly; no intermediate temp files on disk and no rename step, making it safe on UNC/network paths (`\\server\share\...`)
-- **Per-page memory release** — `img.close()` called immediately after save to keep RAM flat on large documents
-- **Worker thread** — conversion runs off the main thread; GUI stays fully responsive
-
----
-
-## Screenshots
-
-> ![PDF//IMG Converter](pdf2img-screen01.png)
-
----
+- **Batch conversion** with a file picker and drag and drop when available.
+- **PNG and JPEG export** at 72–600 DPI, with a default of 200 DPI.
+- **Page selection** for all pages or ranges such as `1-3, 5`.
+- **Flexible output** with a separate folder for each PDF or images in a shared folder.
+- **Matching filename handling** through identifiers based on each PDF's source path.
+- **Progress, cancellation, and reports**, plus saved output preferences and overwrite control.
 
 ## Requirements
 
-### Python
-Python 3.8 or newer.
+- Python 3.10 or later with Tkinter and a desktop display.
+- Python dependencies listed in [requirements.txt](requirements.txt).
+- Poppler, installed separately from the Python dependencies.
 
-### System dependency — Poppler
-`pdf2image` requires Poppler binaries on the system PATH.
+Windows is the tested platform. Expand the macOS and Linux instructions below for other desktop environments.
 
-**Windows**
-1. Download the latest Poppler for Windows from [oschwartz10612/poppler-windows](https://github.com/oschwartz10612/poppler-windows/releases)
-2. Extract and add the `bin/` folder to your system PATH, or pass `poppler_path=r"C:\path\to\poppler\bin"` directly to `convert_from_path()` in the source.
+## Quick start
 
-**macOS**
+Download or clone the repository, then open a terminal in its root folder.
+
+Install Poppler using the Windows build linked in the [pdf2image installation guide](https://pdf2image.readthedocs.io/en/latest/installation.html). Extract it and locate the executable folder, usually `Library\bin`.
+
+The app requires `pdfinfo.exe` and the selected renderer: `pdftoppm.exe` by default, or `pdftocairo.exe` when that backend is enabled.
+
+Create a Python environment, install dependencies, and launch the app:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe pdf_to_image_converter.py
+```
+
+In **Advanced → Poppler bin**, select the Poppler executable folder. Leave this field blank if the required executables are already on your `PATH`.
+
+<details>
+<summary>macOS and Linux setup</summary>
+
+Ensure your Python installation includes Tkinter. These platforms have not been tested.
+
+Install Poppler with the command appropriate to your system, as documented in the [pdf2image installation guide](https://pdf2image.readthedocs.io/en/latest/installation.html):
+
 ```bash
+# macOS with Homebrew
 brew install poppler
+
+# Ubuntu / Debian
+sudo apt-get install poppler-utils
 ```
 
-**Linux (Debian/Ubuntu)**
-```bash
-sudo apt install poppler-utils
-```
-
----
-
-## Installation
+Create a Python environment, install dependencies, and launch:
 
 ```bash
-git clone https://github.com/aggelosy/pdf-img-converter.git
-cd pdf-img-converter
-pip install -r requirements.txt
+python3 -m venv .venv
+./.venv/bin/python -m pip install -r requirements.txt
+./.venv/bin/python pdf_to_image_converter.py
 ```
 
----
+Tkinter support must be available through your Python distribution; it is not installed by `requirements.txt`.
 
-## Running
-
-```bash
-python pdf_converter_pro.py
-```
-
----
-
-## Dependencies
-
-```
-pdf2image>=1.16
-PyMuPDF>=1.23
-PyQt5>=5.15
-Pillow>=9.0
-```
-
-All installable via:
-```bash
-pip install pdf2image PyMuPDF PyQt5 Pillow
-```
-
-A `requirements.txt` is included in the repo.
-
----
+</details>
 
 ## Usage
 
-1. **Load PDFs** — click `+ Add Files` or drag and drop PDF files onto the queue
-2. **Configure** — set format, DPI, quality, threads, page range, and output folder in the top controls
-3. **Preview** — click any queue item to see a live first-page preview in the sidebar
-4. **Convert** — click `▶ CONVERT ALL`; monitor progress in the log and results tabs
-5. **Access output** — right-click any result item and choose *Reveal in Explorer* (or enable *Open when done*)
+1. Click **Add PDFs**, or drag PDFs onto the file list when available.
+2. Select an output folder. Leave it blank to save beside each source PDF.
+3. Choose whether to **Extract each PDF into its own folder**.
+4. Set **Format**, **DPI**, and **Pages**. Use `All` or a range such as `1-3, 5`.
+5. Optionally enable **Overwrite existing** or **Use pdftocairo backend**.
+6. Click **Convert**. Use **View report** for results or **Open output folder** to open the most recent destination.
 
-Output files are named `<pdf-name>-0001.png`, `<pdf-name>-0002.png`, etc., inside a subfolder named after the PDF (or your custom prefix + PDF name), placed in either the PDF's own directory or your chosen output folder.
+Page selections apply to every PDF. A selection outside a PDF's page count fails that file while other readable PDFs can continue.
 
----
+**Cancel** stops the batch after the current Poppler call finishes or times out. Images already saved are kept.
 
-## Project Structure
+## Output layouts
 
+The **Extract each PDF into its own folder** checkbox is enabled by default and remembered between launches.
+
+### Separate folders: checkbox enabled
+
+Two PDFs named `report.pdf` from different source folders produce separate destinations:
+
+```text
+output/
+├── report - 1a2b3c4d5e6f/
+│   ├── page 001.png
+│   └── page 002.png
+└── report - 7f8e9d0c1b2a/
+    ├── page 001.png
+    └── page 002.png
 ```
-pdf-img-converter/
-├── pdf_converter_pro.py   # Main application (single file)
-├── requirements.txt
-└── README.md
+
+### Shared folder: checkbox disabled
+
+Images are saved directly into the output folder with a PDF-specific prefix:
+
+```text
+output/
+├── report - 1a2b3c4d5e6f - page 001.png
+├── report - 1a2b3c4d5e6f - page 002.png
+├── report - 7f8e9d0c1b2a - page 001.png
+└── report - 7f8e9d0c1b2a - page 002.png
 ```
 
----
+The identifiers shown are examples. Every PDF receives a sanitized name and a 12-character identifier derived from its resolved source path. Moving or renaming a PDF changes its identifier. JPEG output uses `.jpg`; page numbers retain their original PDF numbering.
 
-## Known Limitations
+With no output folder selected, separate folders or individual images are created beside each PDF according to the checkbox setting.
 
-- Preview renders only the **first page** of the selected PDF (by design — keeps it fast)
-- WebP output requires Pillow built with WebP support (standard pip install includes it)
-- On very large PDFs (500+ pages), memory usage scales with `thread_count` — reduce threads if needed
+### Existing images
 
----
+- **Overwrite disabled:** preserve existing images and add numbered copies, such as `page 001 (2).png`.
+- **Overwrite enabled:** replace matching destination images after rendering completes.
 
-## License
+Other images in the destination remain in place, including pages from earlier conversions.
 
-MIT — free to use, modify, and distribute.
+<details>
+<summary>Saved settings</summary>
+
+The output folder, Poppler folder, DPI, format, renderer, and folder checkbox are saved when conversion starts and when the app closes. The file list, page selection, and overwrite choice reset between launches.
+
+Settings locations:
+
+- **Windows:** `%LOCALAPPDATA%\PdfToImageConverter\settings.json`
+- **macOS / Linux:** `$XDG_CONFIG_HOME/PdfToImageConverter/settings.json`, falling back to `~/.config/PdfToImageConverter/settings.json`.
+
+To restore defaults, close the app and remove its `settings.json` file.
+
+</details>
+
+## Troubleshooting
+
+- **Poppler not found:** select the folder containing `pdfinfo` and the selected renderer under **Advanced → Poppler bin**. Reopen the terminal after changing `PATH`.
+- **Missing Python package:** run the dependency installation command with the same Python environment used to launch the app.
+- **Drag and drop unavailable:** use **Add PDFs**.
+- **PDF conversion failed:** check **View report**, the page selection, and output-folder permissions. The interface does not provide password entry for protected PDFs.
+- **Page too large:** lower the DPI. When page dimensions are available, the app rejects pages exceeding 80 million pixels.
+- **Cancellation takes time:** PDF information calls time out after 30 seconds; page rendering calls time out after 120 seconds.
+
+When reporting a problem, include your operating system, Python version, selected renderer, and the error from **View report**.
+
