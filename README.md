@@ -1,5 +1,6 @@
 # PDF to Image Converter
 
+[![Version 3.0.0](https://img.shields.io/badge/Version-3.0.0-6F42C1)](https://github.com/aggelosy/pdf-img-converter/releases)
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![PNG and JPEG output](https://img.shields.io/badge/Output-PNG%20%7C%20JPEG-2EA44F)
 
@@ -7,7 +8,7 @@ A desktop application for converting PDF pages into images in bulk. Choose the p
 
 All PDF processing runs locally using Poppler. No document uploads are required.
 
-[Quick start](#quick-start) · [Usage](#usage) · [Output layouts](#output-layouts) · [Troubleshooting](#troubleshooting)
+[Quick start](#quick-start) · [Usage](#usage) · [Output layouts](#output-layouts) · [Troubleshooting](#troubleshooting) · [Changelog](CHANGELOG.md)
 
 ## Features
 
@@ -26,9 +27,21 @@ All PDF processing runs locally using Poppler. No document uploads are required.
 
 Windows is the tested platform. Expand the macOS and Linux instructions below for other desktop environments.
 
+## Upgrading from v2.0.0
+
+Version 3.0.0 replaces the PyQt5 interface with Tkinter and ttkbootstrap. Install the updated dependencies and launch `pdf_to_image_converter.py` instead of `pdf_converter_pro.py`.
+
+- Supported output formats are now **PNG and JPEG**. TIFF, WebP, and BMP export are no longer available.
+- The default resolution is **200 DPI**. Any whole-number DPI from 72 to 600 can be selected.
+- Output names now include a source-path identifier, and selected pages retain their original PDF page numbers.
+- The previous preview, grayscale, custom filename prefix, image-quality sliders, and thread-count controls are not available in this interface. JPEG quality is fixed at 92, and rendering uses one Poppler thread.
+- Use **Open output folder** to open a destination manually.
+
+See [CHANGELOG.md](CHANGELOG.md) for the release changes.
+
 ## Quick start
 
-Download or clone the repository, then open a terminal in its root folder.
+Download the source archive from [Releases](https://github.com/aggelosy/pdf-img-converter/releases), or clone the repository, then open a terminal in the extracted or cloned project folder.
 
 Install Poppler using the Windows build linked in the [pdf2image installation guide](https://pdf2image.readthedocs.io/en/latest/installation.html). Extract it and locate the executable folder, usually `Library\bin`.
 

@@ -312,7 +312,8 @@ def convert_files(files, output, poppler, dpi, file_format, page_spec, overwrite
 if ENGINE_IMPORT_ERROR is not None:
     convert_files = None
 
-APP_TITLE = "PDF to Image Converter 2.1"
+APP_VERSION = "3.0.0"
+APP_TITLE = f"PDF to Image Converter {APP_VERSION}"
 
 
 
