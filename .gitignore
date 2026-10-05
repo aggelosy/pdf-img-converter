@@ -1,34 +1,38 @@
-# Python
+# Python bytecode and caches
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-*.egg
-*.egg-info/
-dist/
-build/
-.eggs/
-pip-wheel-metadata/
-
 # Virtual environments
 .venv/
 venv/
 env/
-ENV/
-
-# IDE
+.env/
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+# Test and code-quality caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+# Local editor files
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
+# Operating-system files
 .DS_Store
 Thumbs.db
-
-# Output / test files
-*.pdf
-*.png
-*.jpg
-*.jpeg
-*.tiff
-*.webp
-*.bmp
+Desktop.ini
+# Conversion output and temporary rendering directories
+/output/
+.pdf-render-*/
+# Generated page images in either output mode, including numbered copies
+page [0-9][0-9][0-9]*.png
+page [0-9][0-9][0-9]*.jpg
+* - page [0-9][0-9][0-9]*.png
+* - page [0-9][0-9][0-9]*.jpg
